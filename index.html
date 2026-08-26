@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Connection</title>
+  <meta name="description" content="Connect securely with your technical support specialist.">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="apple-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Support Connection">
+  <meta property="og:description" content="Connect securely with your technical support specialist.">
+  <meta property="og:type" content="website">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Background -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <div class="main-wrapper" id="main-container">
+
+    <!-- =========================================================================
+         VIEW 1: PORTAL SELECTION SCREEN (2 OPTIONS)
+         ========================================================================= -->
+    <main class="card selection-card" id="selection-card">
+      <!-- Security Badge -->
+      <div class="badge-container">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          <span>Secure Remote Assistance Gateway</span>
+        </div>
+      </div>
+
+      <!-- Portal Headline -->
+      <div class="portal-headline">
+        <h1>Support Connection</h1>
+      </div>
+
+      <!-- 2 Interactive Option Cards -->
+      <div class="option-grid">
+        <!-- Option 1: HelpDesk Connection -->
+        <button 
+          type="button" 
+          id="option-helpdesk-connection" 
+          class="option-button helpdesk" 
+          onclick="switchView('helpdesk')"
+          aria-label="Connect to HelpDesk Session"
+        >
+          <div class="logo-box">
+            <img src="logos/helpdesk-connection.png" alt="HelpDesk Connection Logo">
+          </div>
+
+          <h2 class="option-title">
+            <span>HelpDesk</span><br><span>Connection</span>
+          </h2>
+
+          <div class="option-action-btn">
+            <span>Connect</span>
+            <span class="option-arrow">→</span>
+          </div>
+        </button>
+
+        <!-- Option 2: Support Connection -->
+        <button 
+          type="button" 
+          id="option-support-connection" 
+          class="option-button support" 
+          onclick="switchView('support')"
+          aria-label="Connect to Support Connection Session"
+        >
+          <div class="logo-box">
+            <img src="logos/support-connection.png" alt="Support Connection Logo">
+          </div>
+
+          <h2 class="option-title">
+            <span>Support</span><br><span>Connection</span>
+          </h2>
+
+          <div class="option-action-btn">
+            <span>Connect</span>
+            <span class="option-arrow">→</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Footer Security Note -->
+      <div class="card-footer">
+        <p class="footer-text">
+          Only connect with authorized IT & technical support personnel.
+        </p>
+      </div>
+    </main>
+
+    <!-- =========================================================================
+         VIEW 2: HELPDESK SESSION (9-DIGIT CODE -> REMOTEPC)
+         ========================================================================= -->
+    <section class="card session-card hidden" id="helpdesk-card">
+      <!-- Back Button -->
+      <button type="button" class="back-btn" onclick="switchView('selection')" aria-label="Back to selection options">
+        <span>←</span>
+        <span>Back to options</span>
+      </button>
+
+      <!-- Header -->
+      <div class="session-header">
+        <div class="logo-box small">
+          <img src="logos/helpdesk-connection.png" alt="HelpDesk Logo">
+        </div>
+
+        <div class="badge badge-helpdesk" style="margin-bottom: 12px;">
+          <span class="badge-dot red"></span>
+          <span>HelpDesk Live Connection</span>
+        </div>
+
+        <h1 id="heading-helpdesk-session">HelpDesk Session</h1>
+        <p id="subtext-helpdesk-instruction" class="session-subtext">
+          Ask your support technician for the 9-digit session code
+        </p>
+      </div>
+
+      <!-- 9-Digit Form -->
+      <form class="form-group" id="helpdesk-form" onsubmit="return false;" novalidate>
+        <div class="input-container">
+          <label for="helpdesk-code-input" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">9-digit helpdesk session code</label>
+          <input 
+            type="text" 
+            id="helpdesk-code-input" 
+            class="code-input helpdesk-input" 
+            placeholder="000-000-000" 
+            maxlength="11" 
+            inputmode="numeric" 
+            pattern="[0-9]*" 
+            autocomplete="off" 
+            aria-label="9-digit helpdesk session code"
+          />
+
+          <!-- 9-Digit Visual Indicator (3 groups of 3) -->
+          <div class="indicators-row helpdesk-row" id="helpdesk-indicators" aria-hidden="true">
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-divider"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-divider"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-bar hd-bar"></span>
+            <span class="indicator-bar hd-bar"></span>
+          </div>
+
+          <!-- Error Message -->
+          <div id="helpdesk-error-message" class="status-msg error" role="alert">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Invalid 9-digit code. Please check with your technician.</span>
+          </div>
+
+          <!-- Success / Redirecting Message -->
+          <div id="helpdesk-success-message" class="status-msg success" role="status">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Connecting to session. Redirecting...</span>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-start-helpdesk-session" class="submit-btn" disabled>
+          <span id="helpdesk-btn-text">Start HelpDesk Session</span>
+        </button>
+      </form>
+
+      <!-- Footer Security Note -->
+      <div class="card-footer">
+        <p class="footer-text">
+          Only accept connection codes from authorized support personnel.
+        </p>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 3: SUPPORT SESSION (6-DIGIT CODE -> DIRECT DOWNLOAD)
+         ========================================================================= -->
+    <section class="card session-card hidden" id="support-card">
+      <!-- Back Button -->
+      <button type="button" class="back-btn" onclick="switchView('selection')" aria-label="Back to selection options">
+        <span>←</span>
+        <span>Back to options</span>
+      </button>
+
+      <!-- Header -->
+      <div class="session-header">
+        <div class="logo-box small">
+          <img src="logos/support-connection.png" alt="Support Connection Logo">
+        </div>
+
+        <div class="badge" style="margin-bottom: 12px;">
+          <span class="badge-dot"></span>
+          <span>Encrypted Support Tunnel</span>
+        </div>
+
+        <h1 id="heading-support-session">Support Session</h1>
+        <p id="subtext-instruction" class="session-subtext">
+          Ask your support technician for the 6-digit support connection code
+        </p>
+      </div>
+
+      <!-- 6-Digit Form -->
+      <form class="form-group" id="support-form" onsubmit="return false;" novalidate>
+        <div class="input-container">
+          <label for="support-code-input" class="visually-hidden" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">6-digit support connection code</label>
+          <input 
+            type="text" 
+            id="support-code-input" 
+            class="code-input" 
+            placeholder="Enter 6-digit code" 
+            maxlength="6" 
+            inputmode="numeric" 
+            pattern="[0-9]*" 
+            autocomplete="off" 
+            aria-label="6-digit support connection code"
+          />
+
+          <!-- 6-Digit Visual Indicator -->
+          <div class="indicators-row" id="digit-indicators" aria-hidden="true">
+            <span class="indicator-bar"></span>
+            <span class="indicator-bar"></span>
+            <span class="indicator-bar"></span>
+            <span class="indicator-bar"></span>
+            <span class="indicator-bar"></span>
+            <span class="indicator-bar"></span>
+          </div>
+
+          <!-- Error Message -->
+          <div id="support-error-message" class="status-msg error" role="alert">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Invalid code. Please check with your support technician and try again.</span>
+          </div>
+
+          <!-- Success Message -->
+          <div id="support-success-message" class="status-msg success" role="status">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Connecting to session. Please open the downloaded file.</span>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-start-support-session" class="submit-btn" disabled>
+          <span id="support-btn-text">Start Support Session</span>
+        </button>
+      </form>
+
+      <!-- Footer Security Note -->
+      <div class="card-footer">
+        <p class="footer-text">
+          Only accept connection codes from authorized support personnel.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Pure JavaScript Application Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>
